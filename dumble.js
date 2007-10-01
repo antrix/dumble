@@ -1,17 +1,34 @@
 var URLS = new Array("http://www.youtube.com/watch?v=MIayUEi_KGo",
-            "http://www.youtube.com/watch?v=1blG15MhFc4",
+            "http://www.flickr.com/photos/tnhimmies/1468837710/",
+            "http://www.flickr.com/photos/crafty_beaver/1468811180/",
+            "http://video.google.com/videoplay?docid=1927769265420370554",
+            "http://video.google.com/videoplay?docid=-5418697513610148116",
             "http://www.youtube.com/watch?v=CTnqFm-wUVQ",
             "http://www.youtube.com/watch?v=b-GPJw7UttA&watch_response");
 
 var Providers = new Array();
 
+String.prototype.supplant = function (o) {
+    /* http://javascript.crockford.com/remedial.html */
+    return this.replace(/{([^{}]*)}/g,
+        function (a, b) {
+            var r = o[b];
+            return typeof r === 'string' || typeof r === 'number' ? r : a;
+        }
+    );
+};
+
 $(document).ready(
 function() {
+
     for (i in URLS) {
-        for (p in Providers) {
+        for (p=0; p<Providers.length; p++) {
             var v = Providers[p](URLS[i]);
             if (v) {
-                $("#content").append('<div class="obj">' + v + '</div>').fadeIn('slow');
+                //v.hide();
+                $("#content").append(
+                    $('<div class="obj"></div>').hide().prepend(v).fadeIn("slow"));
+                //v.fadeIn("slow");
                 break;
             }
         }
@@ -22,17 +39,64 @@ function() {
 
 YoutubeProvider = function(url) {
     this.re = /youtube\.com\/watch.+v=([\w-]+)&?/i
-    this.template = '<object width="425" height="350"><param name="movie" value="http://www.youtube.com/v/VIDEOID"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/VIDEOID" type="application/x-shockwave-flash" wmode="transparent" width="425" height="350"></embed></object>'
+    this.template = '<object width="425" height="350"><param name="movie" value="http://www.youtube.com/v/{videoid}"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/{videoid}" type="application/x-shockwave-flash" wmode="transparent" width="425" height="350"></embed></object>'
 
-    if (url.match(this.re)) {
-        var matches = this.re.exec(url);
-        //alert("match: " + matches[1]);
-        var elem = this.template.replace(/VIDEOID/g, matches[1]);
-        return elem;
+    var matches = this.re.exec(url);
+    if (matches) {
+        //alert("youtubematch: " + matches[0]);
+        var elem = this.template.supplant({videoid: matches[1]});
+        return $(elem);
     }
     else {
-        alert("no match: " + url);
         return false;
     }
 }
 Providers.push(YoutubeProvider);
+
+GoogleVideoProvider = function(url) {
+    this.re = /video\.google\.com\/videoplay.+docid=([\d-]+)&?/i
+    this.template = '<embed style="width:400px; height:326px;" id="VideoPlayback" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId={videoid}&hl=en" flashvars=""> </embed>'
+
+    var matches = this.re.exec(url);
+    if (matches) {
+        //alert("googvideomatch: " + matches[0]);
+        var elem = this.template.supplant({videoid: matches[1]});
+        return $(elem);
+    }
+    else {
+        return false;
+    }
+}
+Providers.push(GoogleVideoProvider);
+
+FlickrProvider = function(url) {
+    this.re = /flickr.com\/photos\/.+\/(\d+)\//i
+    this.template = '<a href="{url}"><img src="{source}" width="{width}" height="{height}" /></a>'
+
+    var matches = this.re.exec(url);
+    if (matches) {
+        //alert("flickrmatch: " + matches[1]);
+        //return "fetching: " + "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=580286c8f38f9750dafddca438c577b5&photo_id=" 
+                    + matches[1] + "&format=json&jsoncallback=?";
+        
+        var img = $("<img />").attr("src", "localhost");
+        
+        $.getJSON("http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=580286c8f38f9750dafddca438c577b5&photo_id=" 
+                    + matches[1] + "&format=json&jsoncallback=?", function(data) {
+           
+            $.each(data.sizes.size, function(i, item) {
+                if (item.label == 'Medium') {
+                    img.attr("src", item.source);
+                    img.attr("width", item.width);
+                    img.attr("height", item.height);
+                    return false;
+                }
+            });
+          });
+        return img;
+    }
+    else {
+        return false;
+    }
+}
+Providers.push(FlickrProvider);
