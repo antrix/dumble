@@ -25,21 +25,21 @@ function() {
         for (p=0; p<Providers.length; p++) {
             var v = Providers[p](URLS[i]);
             if (v) {
-                //v.hide();
-                $("#content").append(
-                    $('<div class="obj"></div>').hide().prepend(v).fadeIn("slow"));
-                //v.fadeIn("slow");
+                $("#posts").append(
+                    $('<div class="post"></div>').prepend(v));
                 break;
             }
         }
     }
+//     $('.video').show('slow');
+    $('.photo img').fadeIn('slow');
 }
 );
 
 
 YoutubeProvider = function(url) {
     this.re = /youtube\.com\/watch.+v=([\w-]+)&?/i
-    this.template = '<object width="425" height="350"><param name="movie" value="http://www.youtube.com/v/{videoid}"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/{videoid}" type="application/x-shockwave-flash" wmode="transparent" width="425" height="350"></embed></object>'
+    this.template = '<div class="video"><embed src="http://www.youtube.com/v/{videoid}" type="application/x-shockwave-flash" wmode="transparent" width="425" height="355"></embed></div>'
 
     var matches = this.re.exec(url);
     if (matches) {
@@ -55,7 +55,7 @@ Providers.push(YoutubeProvider);
 
 GoogleVideoProvider = function(url) {
     this.re = /video\.google\.com\/videoplay.+docid=([\d-]+)&?/i
-    this.template = '<embed style="width:400px; height:326px;" id="VideoPlayback" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId={videoid}&hl=en" flashvars=""> </embed>'
+    this.template = '<div class="video"><embed style="width:400px; height:326px;" id="VideoPlayback" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId={videoid}&hl=en" flashvars=""> </embed></div>'
 
     var matches = this.re.exec(url);
     if (matches) {
@@ -78,10 +78,15 @@ FlickrProvider = function(url) {
         //alert("flickrmatch: " + matches[1]);
         //return "fetching: " + "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=9baf1fe6daf86b0602b1ca31f7a83688&photo_id=" + matches[1] + "&format=json&jsoncallback=?";
         
-        var a = $("<a />").attr("href", url);
-        var img = $("<img />").attr("src", "localhost");
+        var a = $('<a />').attr('href', url);
+        var img = $('<img />').attr('src', 'localhost').attr('display', 'none');
         a.prepend(img);
-
+        var div = $('<div class="photo"></div>');
+        div.prepend(a);
+        
+        // NOTE: The img object will be returned immediately as getJSON is an async call
+        // The img object's ref is saved in the following closure so it'll get updated in main
+        // document when the json callback manipulates the img ref
         $.getJSON("http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=9baf1fe6daf86b0602b1ca31f7a83688&photo_id=" 
                     + matches[1] + "&format=json&jsoncallback=?", function(data) {
            
@@ -94,7 +99,7 @@ FlickrProvider = function(url) {
                 }
             });
           });
-        return a;
+        return div;
     }
     else {
         return false;
