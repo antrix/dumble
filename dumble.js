@@ -76,12 +76,13 @@ FlickrProvider = function(url) {
     var matches = this.re.exec(url);
     if (matches) {
         //alert("flickrmatch: " + matches[1]);
-        //return "fetching: " + "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=580286c8f38f9750dafddca438c577b5&photo_id=" 
-                    + matches[1] + "&format=json&jsoncallback=?";
+        //return "fetching: " + "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=9baf1fe6daf86b0602b1ca31f7a83688&photo_id=" + matches[1] + "&format=json&jsoncallback=?";
         
+        var a = $("<a />").attr("href", url);
         var img = $("<img />").attr("src", "localhost");
-        
-        $.getJSON("http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=580286c8f38f9750dafddca438c577b5&photo_id=" 
+        a.prepend(img);
+
+        $.getJSON("http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=9baf1fe6daf86b0602b1ca31f7a83688&photo_id=" 
                     + matches[1] + "&format=json&jsoncallback=?", function(data) {
            
             $.each(data.sizes.size, function(i, item) {
@@ -93,7 +94,7 @@ FlickrProvider = function(url) {
                 }
             });
           });
-        return img;
+        return a;
     }
     else {
         return false;
