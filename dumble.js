@@ -1,8 +1,8 @@
-var URLS = new Array("http://www.youtube.com/watch?v=MIayUEi_KGo",
+var URLS = new Array("http://video.google.com/videoplay?docid=-5418697513610148116",
             "http://www.flickr.com/photos/tnhimmies/1468837710/",
             "http://www.flickr.com/photos/crafty_beaver/1468811180/",
             "http://video.google.com/videoplay?docid=1927769265420370554",
-            "http://video.google.com/videoplay?docid=-5418697513610148116",
+            "http://www.youtube.com/watch?v=MIayUEi_KGo",
             "http://www.youtube.com/watch?v=CTnqFm-wUVQ",
             "http://www.youtube.com/watch?v=b-GPJw7UttA&watch_response");
 
@@ -26,20 +26,18 @@ function() {
             var v = Providers[p](URLS[i]);
             if (v) {
                 $("#posts").append(
-                    $('<div class="post"></div>').prepend(v));
+                    $('<div class="post"></div>').prepend(v).hide().fadeIn(1000));
                 break;
             }
         }
     }
-//     $('.video').show('slow');
-    $('.photo img').fadeIn('slow');
 }
 );
 
 
 YoutubeProvider = function(url) {
     this.re = /youtube\.com\/watch.+v=([\w-]+)&?/i
-    this.template = '<div class="video"><embed src="http://www.youtube.com/v/{videoid}" type="application/x-shockwave-flash" wmode="transparent" width="425" height="355"></embed></div>'
+    this.template = '<div class="video"><embed src="http://www.youtube.com/v/{videoid}" type="application/x-shockwave-flash" wmode="transparent" style="width:425px; height:355px;"></embed></div>'
 
     var matches = this.re.exec(url);
     if (matches) {
@@ -79,7 +77,7 @@ FlickrProvider = function(url) {
         //return "fetching: " + "http://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=9baf1fe6daf86b0602b1ca31f7a83688&photo_id=" + matches[1] + "&format=json&jsoncallback=?";
         
         var a = $('<a />').attr('href', url);
-        var img = $('<img />').attr('src', 'localhost').attr('display', 'none');
+        var img = $('<img />').attr('src', 'localhost');
         a.prepend(img);
         var div = $('<div class="photo"></div>');
         div.prepend(a);
@@ -92,9 +90,11 @@ FlickrProvider = function(url) {
            
             $.each(data.sizes.size, function(i, item) {
                 if (item.label == 'Medium') {
+                    img.hide();
                     img.attr("src", item.source);
                     img.attr("width", item.width);
                     img.attr("height", item.height);
+                    img.fadeIn(4000);
                     return false;
                 }
             });
