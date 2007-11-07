@@ -3,13 +3,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-   <title>Dumblr</title>
+   <title>Dumble</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <!--<link rel="shortcut icon" href="{Favicon}">
     <link rel="alternate" type="application/rss+xml" title="RSS" href="{RSS}"/>
     -->
 
     <script src="jquery-1.2.1.js" />
+    <!-- replace dumble-providers.js inclusion here by $.getScript call in dumble.js -->
     <script src="dumble-providers.js" />
     <script src="dumble.js" />
      
@@ -122,8 +123,7 @@
       ol {
         list-style: decimal;
       }
-      
-      
+           
       /* Header */
       #header {
         margin: 1em auto;
@@ -180,7 +180,7 @@
       /* Titles */
       .regular h3, .conversation h3, .link h3 {
         color: #c93633;
-        font-size: 2em;
+        font-size: 1.5em;
         line-height: 1em;
         margin-bottom: .5em;
       }
@@ -219,8 +219,12 @@
       
       .photo .caption, .video .caption, .audio .caption {
         display: block;
-        text-align: left;
-      }
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: normal;
+        margin-top: .5em;
+        margin-bottom: .5em;
+       }
       
       /* Conversations */
       .conversation ul {
@@ -302,7 +306,7 @@
   </head>
 <body>
     <div id="header">
-      <h1><a href="/">Dumblr: A JS experiment</a></h1>
+      <h1><a href="/">Dumble: A JS experiment</a></h1>
       <h2>auto tumble your delicious links</h2>
     </div>
     
