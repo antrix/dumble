@@ -13,21 +13,51 @@ Providers.push(GoogleVideoProvider);
 Providers.push(FlickrProvider);
 Providers.push(GenericLinkProvider); /* Should be last in the array! */
 
+var DeliciousURL = 'http://del.icio.us/feeds/json/antrix/linker'
+
 $(document).ready(function() {
-    $.getJSON('http://del.icio.us/feeds/json/antrix/linker?count=20&callback=?',
-        function(data) {
-            $.each(data, function(i, item) {
-                $.each(Providers, function() {
-                    var v = this(item.u, item.d, item.n ? item.n : '');
-                    if (v) {
-                        $("#posts").append(
-                            $('<div class="post"></div>\n').hide().prepend(v));
-                        return false;
-                    }
-                });
 
-            });
-          $('.post').fadeIn(5000);
-        }); /* getJSON */
+    /* Some page setup first */
+    $('#about').hide();
+    $('#sourceURL').val(DeliciousURL);
 
+    $('#aboutHeader,#updateSource').hover(
+        function() {
+            $(this).css({ cursor: 'pointer' });
+        }, 
+        function() {
+            $(this).css({ cursor: 'default' });
+        }) 
+    $('#aboutHeader').click(
+        function() {
+         $('#about').slideToggle('fast');
+    });
+    $('#updateSource').click(
+        function() {
+         DeliciousURL = $('#sourceURL').val();
+         alert(DeliciousURL);
+         doDelicious(DeliciousURL);
+    });
+    
+    doDelicious(DeliciousURL);
 });  /* End $(document).ready() block */
+
+doDelicious = function(URL) {
+    
+    $.getJSON(URL + '?count=2&callback=?',
+     function(data) {
+        $('#dynposts').fadeOut(1000).empty().fadeIn(1000);
+        $.each(data, function(i, item) {
+            $.each(Providers, function() {
+                var v = this(item.u, item.d, item.n ? item.n : '');
+                if (v) {
+                    $('#dynposts').append(
+                        $('<div class="post"></div>\n').hide().prepend(v));
+                    return false;
+                }
+            });
+    
+        });
+        $('.post').fadeIn(3000);
+    });
+}
