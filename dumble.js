@@ -13,13 +13,50 @@ Providers.push(GoogleVideoProvider);
 Providers.push(FlickrProvider);
 Providers.push(GenericLinkProvider); /* Should be last in the array! */
 
-var DeliciousURL = 'http://del.icio.us/feeds/json/antrix/linker'
+var Delicious = Delicious ? Delicious : {
+    currentUser: 'antrix',
+    currentTag: 'linker',
+    currentURL: function() {
+            return this.urlFor(this.currentUser, this.currentTag);
+            },
+    urlFor: function(user, tag) {
+                return 'http://del.icio.us/feeds/json/' + user + '/' + tag;
+            },
+    updatePageFor: function(user, tag) {
+                this.currentUser = user;
+                this.currentTag = tag;
+                this.updatePage();
+            },
+    updatePage:  function(URL) {
+
+        $('body').css({ cursor: 'wait' });
+    
+        $.getJSON(URL ? URL : this.currentURL() + '?count=20&callback=?',
+        function(data) {
+            $('#dynposts').fadeOut(1000).empty().fadeIn(1);
+            $.each(data, function(i, item) {
+                $.each(Providers, function() {
+                    var v = this(item.u, item.d, item.n ? item.n : '');
+                    if (v) {
+                        $('#dynposts').append(
+                            $('<div class="post"></div>\n').hide().prepend(v));
+                        return false;
+                    }
+                });
+        
+            });
+            $('.post').fadeIn(3000);
+            $('body').css({ cursor: 'default' });
+        });
+    }
+}
 
 $(document).ready(function() {
 
     /* Some page setup first */
     $('#about').hide();
-    $('#sourceURL').val(DeliciousURL);
+    $('#sourceUser').val(Delicious.currentUser);
+    $('#sourceTag').val(Delicious.currentTag);
 
     $('#aboutHeader,#updateSource').hover(
         function() {
@@ -34,30 +71,10 @@ $(document).ready(function() {
     });
     $('#updateSource').click(
         function() {
-         DeliciousURL = $('#sourceURL').val();
-         alert(DeliciousURL);
-         doDelicious(DeliciousURL);
+         Delicious.updatePageFor($('#sourceUser').val(), $('#sourceTag').val());
     });
     
-    doDelicious(DeliciousURL);
-});  /* End $(document).ready() block */
+    
+    Delicious.updatePage();
 
-doDelicious = function(URL) {
-    
-    $.getJSON(URL + '?count=2&callback=?',
-     function(data) {
-        $('#dynposts').fadeOut(1000).empty().fadeIn(1000);
-        $.each(data, function(i, item) {
-            $.each(Providers, function() {
-                var v = this(item.u, item.d, item.n ? item.n : '');
-                if (v) {
-                    $('#dynposts').append(
-                        $('<div class="post"></div>\n').hide().prepend(v));
-                    return false;
-                }
-            });
-    
-        });
-        $('.post').fadeIn(3000);
-    });
-}
+});  /* End $(document).ready() block */
