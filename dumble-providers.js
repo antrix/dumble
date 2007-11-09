@@ -48,7 +48,7 @@ AmazonProvider = function(url, caption, notes) {
 }
 
 FlickrProvider = function(url, caption, notes) {
-    this.re = /flickr\.com\/photos\/.+\/(\d+)\//i
+    this.re = /flickr\.com\/photos\/[\w@]+\/(\d+)\//i
 
     var matches = this.re.exec(url);
     if (!matches) {
