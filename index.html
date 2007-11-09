@@ -125,9 +125,12 @@
       }
 
       input {
+        color: #ddc;
+        background-color: #363b39;
         font-size: 0.9em;
-        padding: 5px;
-        border: 2px solid #666;
+        padding: 0.3em;
+        border: 1px solid #ddc;
+        margin-right: 2em;
       }	
     
       /* Header */
@@ -145,6 +148,10 @@
         color: #ccb;
       }
       
+      #updateSource {
+        border: 1px solid #ddc;
+        padding: 0.3em;
+      }
       
       /* Posts */
       #posts {
@@ -319,10 +326,10 @@
     <div id="posts">
       <div class="post" style="background-color: #334B42;">
         <div class="regular">
-          <h3 id="aboutHeader">What is this?</h3>
+          <h3 id="aboutHeader" style="color: #eef;">What is this?</h3>
           <div id="about">To generate for a different delicious account, just modify details here:<br/><br/>
-            Username: <input id="sourceUser" type="text" size="10"/><br/>
-            A tag (optional): <input id="sourceTag" type="text" size="10"/><br/>
+            Username: <input id="sourceUser" type="text" size="10"/>
+            A tag (optional): <input id="sourceTag" type="text" size="10"/>
             <span id="updateSource">Update</span>
             </div>
           

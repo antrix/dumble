@@ -76,6 +76,6 @@ $(document).ready(function() {
     });
     
     
-    Delicious.updatePage();
+//     Delicious.updatePage();
 
 });  /* End $(document).ready() block */
