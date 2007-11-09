@@ -11,6 +11,7 @@ var Providers = new Array();
 Providers.push(YoutubeProvider);
 Providers.push(GoogleVideoProvider);
 Providers.push(FlickrProvider);
+Providers.push(AmazonProvider); 
 Providers.push(GenericLinkProvider); /* Should be last in the array! */
 
 var Delicious = Delicious ? Delicious : {

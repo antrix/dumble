@@ -34,8 +34,21 @@ GoogleVideoProvider = function(url, caption, notes) {
     return $(elem);
 }
 
+AmazonProvider = function(url, caption, notes) {
+    this.re = /amazon\.com\/.*\/?(?:gp\/product|o\/ASIN|obidos\/ASIN|dp)\/(\d{7,10}[\dX])[\/\?]?/i
+    this.template = '<div class="photo"><a href="{url}"><img src="http://images.amazon.com/images/P/{asin}.01._SCLZZZZZZZ_.jpg" alt="{caption}" title="{caption}" /></a><span class="caption">{caption}</span>{notes}</div>'
+    
+    var matches = this.re.exec(url);
+    if (!matches) {
+        return false;
+    }
+
+    var elem = this.template.supplant({asin: matches[1], caption: caption, notes: notes, url: url});
+    return $(elem);
+}
+
 FlickrProvider = function(url, caption, notes) {
-    this.re = /flickr.com\/photos\/.+\/(\d+)\//i
+    this.re = /flickr\.com\/photos\/.+\/(\d+)\//i
 
     var matches = this.re.exec(url);
     if (!matches) {
