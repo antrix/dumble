@@ -18,6 +18,7 @@ Providers.push(GenericLinkProvider); /* Should be last in the array! */
 var Delicious = Delicious ? Delicious : {
     currentUser: 'antrix',
     currentTag: 'linker',
+    currentData: [],
     currentURL: function() {
             return this.urlFor(this.currentUser, this.currentTag);
             },
@@ -27,29 +28,51 @@ var Delicious = Delicious ? Delicious : {
     updatePageFor: function(user, tag) {
                 this.currentUser = user;
                 this.currentTag = tag;
+                this.currentData = [];
                 this.updatePage();
             },
-    updatePage:  function(URL) {
 
-        $('body').css({ cursor: 'wait' });
-    
-        $.getJSON(URL ? URL : this.currentURL() + '?count=20&callback=?',
-        function(data) {
-            $('#dynposts').fadeOut(1000).empty().fadeIn(1);
-            $.each(data, function(i, item) {
+    insertItems: function() {
+            var count = 0;
+            while (this.currentData.length > 0) {
+                var item = this.currentData.shift();
+            
                 $.each(Providers, function() {
                     var v = this(item.u, item.d, item.n ? item.n : '');
                     if (v) {
                         $('#dynposts').append(
                             $('<div class="post"></div>\n').hide().prepend(v));
+                        count += 1;
                         return false;
                     }
                 });
-        
-            });
+                if (count > 20) {
+                    break;
+                }
+            }
+            if (this.currentData.length <= 0) {
+                $('#previous-next').hide(1000);
+            } else {
+                $('#previous-next').show(1000);
+            }
             $('.post').fadeIn(3000);
+        },
+
+    updatePage:  function(URL) {
+        $('body').css({ cursor: 'wait' });
+
+        if (this.currentData.length <= 0) {
+            $('#dynposts').fadeOut(1000).empty().fadeIn(1);
+            $.getJSON(URL ? URL : this.currentURL() + '?count=100&callback=?', 
+                function(data) {
+                    Delicious.currentData = data;
+                    Delicious.insertItems();
+                    $('body').css({ cursor: 'default' });
+                });
+        } else {
+            this.insertItems();
             $('body').css({ cursor: 'default' });
-        });
+        }
     }
 }
 
@@ -57,6 +80,7 @@ $(document).ready(function() {
 
     /* Some page setup first */
     $('#about').hide();
+    $('#previous-next').hide();
     $('#sourceUser').val(Delicious.currentUser);
     $('#sourceTag').val(Delicious.currentTag);
 
