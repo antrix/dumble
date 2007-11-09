@@ -80,6 +80,19 @@ FlickrProvider = function(url, caption, notes) {
     return elem;
 }
 
+GenericImageProvider = function(url, caption, notes) {
+    this.re = /.*(jpeg|jpg|png|bmp|gif)$/i
+    this.template = '<div class="photo"><img src="{url}" alt="{caption}" title="{caption}" /><span class="caption">{caption}</span>{notes}</div>'
+    
+    var matches = this.re.exec(url);
+    if (!matches) {
+        return false;
+    }
+
+    var elem = this.template.supplant({url: url, caption: caption, notes: notes});
+    return $(elem);
+}
+
 GenericLinkProvider = function(url, caption, notes) {
     this.template = '<div class="link"><h3><a href="{url}" target="blank">{caption}</a></h3>{notes}</div>'
 

@@ -12,6 +12,7 @@ Providers.push(YoutubeProvider);
 Providers.push(GoogleVideoProvider);
 Providers.push(FlickrProvider);
 Providers.push(AmazonProvider); 
+Providers.push(GenericImageProvider);
 Providers.push(GenericLinkProvider); /* Should be last in the array! */
 
 var Delicious = Delicious ? Delicious : {
@@ -76,6 +77,6 @@ $(document).ready(function() {
     });
     
     
-//     Delicious.updatePage();
+    Delicious.updatePage();
 
 });  /* End $(document).ready() block */
