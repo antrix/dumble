@@ -15,7 +15,7 @@ Providers.push(AmazonProvider);
 Providers.push(GenericImageProvider);
 Providers.push(GenericLinkProvider); /* Should be last in the array! */
 
-var Delicious = Delicious ? Delicious : {
+var Dumble = Dumble ? Dumble : {
     currentUser: 'antrix',
     currentTag: 'linker',
     currentData: [],
@@ -50,23 +50,22 @@ var Delicious = Delicious ? Delicious : {
                     break;
                 }
             }
-            if (this.currentData.length <= 0) {
-                $('#previous-next').hide(1000);
-            } else {
-                $('#previous-next').show(1000);
+            if (this.currentData.length > 0) {
+                $('#previous-next').fadeIn(1000);
             }
             $('.post').fadeIn(3000);
         },
 
     updatePage:  function(URL) {
         $('body').css({ cursor: 'wait' });
-
+        $('#previous-next').fadeOut(2000);
+        
         if (this.currentData.length <= 0) {
             $('#dynposts').fadeOut(1000).empty().fadeIn(1);
             $.getJSON(URL ? URL : this.currentURL() + '?count=100&callback=?', 
                 function(data) {
-                    Delicious.currentData = data;
-                    Delicious.insertItems();
+                    Dumble.currentData = data;
+                    Dumble.insertItems();
                     $('body').css({ cursor: 'default' });
                 });
         } else {
@@ -81,8 +80,8 @@ $(document).ready(function() {
     /* Some page setup first */
     $('#about').hide();
     $('#previous-next').hide();
-    $('#sourceUser').val(Delicious.currentUser);
-    $('#sourceTag').val(Delicious.currentTag);
+    $('#sourceUser').val(Dumble.currentUser);
+    $('#sourceTag').val(Dumble.currentTag);
 
     $('#aboutHeader,#updateSource').hover(
         function() {
@@ -97,10 +96,10 @@ $(document).ready(function() {
     });
     $('#updateSource').click(
         function() {
-         Delicious.updatePageFor($('#sourceUser').val(), $('#sourceTag').val());
+         Dumble.updatePageFor($('#sourceUser').val(), $('#sourceTag').val());
     });
     
     
-    Delicious.updatePage();
+    Dumble.updatePage();
 
 });  /* End $(document).ready() block */
