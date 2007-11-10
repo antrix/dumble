@@ -16,8 +16,8 @@ Providers.push(GenericImageProvider);
 Providers.push(GenericLinkProvider); /* Should be last in the array! */
 
 var Dumble = Dumble ? Dumble : {
-    currentUser: 'antrix',
-    currentTag: 'linker',
+    currentUser: 'scobleizer',
+    currentTag: '',
     currentData: [],
     currentURL: function() {
             return this.urlFor(this.currentUser, this.currentTag);
@@ -25,10 +25,15 @@ var Dumble = Dumble ? Dumble : {
     urlFor: function(user, tag) {
                 return 'http://del.icio.us/feeds/json/' + user + '/' + tag;
             },
+    friendsURLFor: function(user) {
+                return 'http://del.icio.us/feeds/json/network/' + user;
+            },
     updatePageFor: function(user, tag) {
                 this.currentUser = user;
-                this.currentTag = tag;
-                this.currentData = [];
+                this.currentTag = tag ? tag : '';
+                this.currentData = [];                
+                $('#sourceUser').val(this.currentUser);
+                $('#sourceTag').val(this.currentTag);
                 this.updatePage();
             },
 
@@ -56,13 +61,33 @@ var Dumble = Dumble ? Dumble : {
             $('.post').fadeIn(3000);
         },
 
+    updateFriends: function() {
+        $('#friends-list').fadeOut(1000);
+        $('#friends h3').text("Explore {name}'s network".supplant({name: this.currentUser}));
+        var s = this.friendsURLFor(this.currentUser);
+        $.getJSON(this.friendsURLFor(this.currentUser) + '?callback=?', 
+            function(names) {
+                var tgt = $('#friends-list');
+                tgt.empty();
+                if(names.length > 0) {
+                    $.each(names, function(i, name) {
+                        var e = $('<li><a href="javascript:Dumble.updatePageFor(\'{name}\');">{name}</a></li>'.supplant({name: name}));
+                        tgt.append(e);
+                    });
+                } else {
+                    tgt.text(Dumble.currentUser + "'s network is empty! Is this an anti-social person? ;-)");
+                }
+                $('#friends-list').fadeIn(1000);
+            });
+    },
     updatePage:  function(URL) {
         $('body').css({ cursor: 'wait' });
         $('#previous-next').fadeOut(2000);
         
         if (this.currentData.length <= 0) {
+            this.updateFriends();
             $('#dynposts').fadeOut(1000).empty().fadeIn(1);
-            $.getJSON(URL ? URL : this.currentURL() + '?count=100&callback=?', 
+            $.getJSON(URL ? URL : this.currentURL() + '?count=10&callback=?', 
                 function(data) {
                     Dumble.currentData = data;
                     Dumble.insertItems();
@@ -72,7 +97,7 @@ var Dumble = Dumble ? Dumble : {
             this.insertItems();
             $('body').css({ cursor: 'default' });
         }
-    }
+    } 
 }
 
 $(document).ready(function() {

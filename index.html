@@ -147,12 +147,26 @@
       #header a:hover {
         color: #ccb;
       }
-      
+
       #updateSource {
         border: 1px solid #ddc;
         padding: 0.3em;
       }
       
+       #friends {
+          border-top: 1px solid #555;
+          margin: 1em;
+          margin-top: 2em;
+          padding: 1em;
+/*           width: 75%; */
+        }
+
+        #friends br {clear: both}
+        #friends ul { list-style: none;}
+        #friends-list li {
+          margin-bottom: 0.5em; padding: 0; display: block; float: left; width: 25%;
+        }
+        
       /* Posts */
       #posts {
         margin: 0 auto;
@@ -329,10 +343,16 @@
         <div class="regular">
           <h3 id="aboutHeader" style="color: #eef;">What is this?</h3>
           <div id="about">To generate for a different delicious account, just modify details here:<br/><br/>
+            <div style="margin: 1em; padding: 1em;">
             Username: <input id="sourceUser" type="text" size="10"/>
             A tag (optional): <input id="sourceTag" type="text" size="10"/>
             <span id="updateSource">Update</span>
             </div>
+            <div id="friends">
+                <h3 style="text-align: center; color: #ddc;"></h3>
+                <ul id="friends-list"></ul><br/>
+            </div>
+          </div>
           
         </div> <!-- end regular post -->
       </div>        
