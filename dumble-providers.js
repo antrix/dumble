@@ -47,6 +47,30 @@ AmazonProvider = function(url, caption, notes) {
     return $(elem);
 }
 
+IMDbProvider = function(url, caption, notes) {
+    this.re = /imdb\.com\/title\/tt\d{7,7}\//i
+    this.template = '<div class="link"><h3><a href="{url}" target="blank">{caption}</a></h3></div>'
+
+    var matches = this.re.exec(url);
+    if (!matches) {
+        return false;
+    }
+
+    var ratings_re = /(\d{1,2}) ?\/ ?(\d{1,2})/i
+    var ratings = ratings_re.exec(notes);
+
+    var elem = $(this.template.supplant({url: url, caption: caption}));
+
+    if (ratings && (parseInt(ratings[1]) <= parseInt(ratings[2]))) {
+        stars = $('<img />')
+                   .attr("src", 'images/' + Math.round(5*ratings[1]/ratings[2]) + '_stars.png')
+                   .attr("height", 16);
+        elem.append(stars)
+    }
+
+    return elem;
+}
+
 FlickrProvider = function(url, caption, notes) {
     this.re = /flickr\.com\/photos\/[\w@]+\/(\d+)\//i
 

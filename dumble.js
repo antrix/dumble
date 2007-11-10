@@ -12,11 +12,12 @@ Providers.push(YoutubeProvider);
 Providers.push(GoogleVideoProvider);
 Providers.push(FlickrProvider);
 Providers.push(AmazonProvider); 
+Providers.push(IMDbProvider);
 Providers.push(GenericImageProvider);
 Providers.push(GenericLinkProvider); /* Should be last in the array! */
 
 var Dumble = Dumble ? Dumble : {
-    currentUser: 'scobleizer',
+    currentUser: 'antrix',
     currentTag: '',
     currentData: [],
     currentURL: function() {
@@ -87,10 +88,16 @@ var Dumble = Dumble ? Dumble : {
         if (this.currentData.length <= 0) {
             this.updateFriends();
             $('#dynposts').fadeOut(1000).empty().fadeIn(1);
-            $.getJSON(URL ? URL : this.currentURL() + '?count=10&callback=?', 
+            $.getJSON(URL ? URL : this.currentURL() + '?count=100&callback=?', 
                 function(data) {
-                    Dumble.currentData = data;
-                    Dumble.insertItems();
+                    if (data.length > 0) {
+                        Dumble.currentData = data;
+                        Dumble.insertItems();
+                    } else {
+                        $('#dynposts').append(
+                            $('<div class="post"><h3>No items found :-(</h3></div>\n').hide());
+                         $('.post').fadeIn(3000);
+                    }
                     $('body').css({ cursor: 'default' });
                 });
         } else {
