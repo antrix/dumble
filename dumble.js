@@ -29,12 +29,17 @@ var Dumble = Dumble ? Dumble : {
     friendsURLFor: function(user) {
                 return 'http://del.icio.us/feeds/json/network/' + user;
             },
+    permalink: function() {
+                return location.protocol + '//' + location.pathname + '?u=' + this.currentUser
+                  + (this.currentTag ? '&t=' + this.currentTag : '');
+            },
     updatePageFor: function(user, tag) {
                 this.currentUser = user;
                 this.currentTag = tag ? tag : '';
                 this.currentData = [];                
                 $('#sourceUser').val(this.currentUser);
                 $('#sourceTag').val(this.currentTag);
+                $('#permalink').attr('href', this.permalink());
                 this.updatePage();
             },
 
@@ -112,8 +117,21 @@ $(document).ready(function() {
     /* Some page setup first */
     $('#about').hide();
     $('#previous-next').hide();
+
+    re_u = /u=(\w+)/i
+    re_t = /t=(\w+)/i
+    var m = re_u.exec(location.search);
+    if (m) {
+       Dumble.currentUser = m[1];
+    }
+    m = re_t.exec(location.search);
+    if (m) {
+       Dumble.currentTag = m[1];
+    }
+
     $('#sourceUser').val(Dumble.currentUser);
     $('#sourceTag').val(Dumble.currentTag);
+    $('#permalink').attr('href', Dumble.permalink());
 
     $('#aboutHeader,#updateSource').hover(
         function() {
