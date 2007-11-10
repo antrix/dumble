@@ -23,7 +23,20 @@ YoutubeProvider = function(url, caption, notes) {
 
 GoogleVideoProvider = function(url, caption, notes) {
     this.re = /video\.google\.com\/videoplay.+docid=([\d-]+)&?/i
-    this.template = '<div class="video"><embed style="width:400px; height:326px;" id="VideoPlayback" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId={videoid}&hl=en" flashvars=""></embed><span class="caption">{caption}</span>{notes}</div>'
+    this.template = '<div class="video"><embed style="width:400px; height:326px;" type="application/x-shockwave-flash" src="http://video.google.com/googleplayer.swf?docId={videoid}&hl=en" flashvars=""></embed><span class="caption">{caption}</span>{notes}</div>'
+
+    var matches = this.re.exec(url);
+    if (!matches) {
+        return false;
+    }
+
+    var elem = this.template.supplant({videoid: matches[1], caption: caption, notes: notes});
+    return $(elem);
+}
+
+CollegeHumorProvider = function(url, caption, notes) {
+    this.re = /collegehumor\.com\/video:([\d]+)/i
+    this.template = '<div class="video"><embed style="width:480px; height:360px;" type="application/x-shockwave-flash" src="http://www.collegehumor.com/moogaloop/moogaloop.swf?clip_id={videoid}&fullscreen=1" ></embed><span class="caption">{caption}</span>{notes}</div>'
 
     var matches = this.re.exec(url);
     if (!matches) {

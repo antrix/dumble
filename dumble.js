@@ -10,6 +10,7 @@ var Providers = new Array();
 
 Providers.push(YoutubeProvider);
 Providers.push(GoogleVideoProvider);
+Providers.push(CollegeHumorProvider);
 Providers.push(FlickrProvider);
 Providers.push(AmazonProvider); 
 Providers.push(IMDbProvider);
