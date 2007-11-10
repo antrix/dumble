@@ -30,7 +30,7 @@ var Dumble = Dumble ? Dumble : {
                 return 'http://del.icio.us/feeds/json/network/' + user;
             },
     permalink: function() {
-                return location.protocol + '//' + location.pathname + '?u=' + this.currentUser
+                return location.protocol + '//' + location.host + location.pathname + '?u=' + this.currentUser
                   + (this.currentTag ? '&t=' + this.currentTag : '');
             },
     updatePageFor: function(user, tag) {
