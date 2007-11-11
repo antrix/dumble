@@ -71,7 +71,9 @@ var Dumble = Dumble ? Dumble : {
     updateFriends: function() {
         $('#friends-list').fadeOut(1000);
         $('#friends h3').text("Explore {name}'s network".supplant({name: this.currentUser}));
-        var s = this.friendsURLFor(this.currentUser);
+        $('#networklink a').attr('href', 'http://del.icio.us/network?add=' + this.currentUser)
+                    .text("Add {name} to your del.icio.us network".supplant({name: this.currentUser}));
+
         $.getJSON(this.friendsURLFor(this.currentUser) + '?callback=?', 
             function(names) {
                 var tgt = $('#friends-list');
