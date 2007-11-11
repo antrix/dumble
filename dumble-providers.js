@@ -49,15 +49,30 @@ CollegeHumorProvider = function(url, caption, notes) {
 
 AmazonProvider = function(url, caption, notes) {
     this.re = /amazon\.com\/.*\/?(?:gp\/product|o\/ASIN|obidos\/ASIN|dp)\/(\d{7,10}[\dX])[\/\?]?/i
-    this.template = '<div class="photo"><a href="{url}"><img src="http://images.amazon.com/images/P/{asin}.01._SCLZZZZZZZ_.jpg" alt="{caption}" title="{caption}" /></a><span class="caption">{caption}</span>{notes}</div>'
     
     var matches = this.re.exec(url);
     if (!matches) {
         return false;
     }
 
-    var elem = this.template.supplant({asin: matches[1], caption: caption, notes: notes, url: url});
-    return $(elem);
+    var a = $('<a />').attr('href', url);
+    var img = $('<img />').attr('src', 'localhost');
+    a.append(img);
+    var elem = $('<div class="photo"></div>');
+    elem.append(a);
+    elem.append('<span class="caption">'+ caption +'</span>' + notes);
+    
+    // NOTE: The img object will be returned immediately as getJSON is an async call
+    // The img object's ref is saved in the following closure so it'll get updated in main
+    // document when the json callback manipulates the img ref
+    $.getJSON('http://xml-us.amznxslt.com/onca/xml?Service=AWSECommerceService&SubscriptionId=1FTX8DJ3D0NCX9DRWQR2&AssociateTag=antrixnet-20&Operation=ItemLookup&ResponseGroup=Images&Style=http://antrix.net/dumble/ajsonSingleAsin.xsl&ContentType=text/javascript&IdType=ASIN&ItemId=' + matches[1] + '&CallBack=?', function(data) {
+        if (data.Item.largeimgurl.length) {
+            img.attr("src", data.Item.largeimgurl.replace(/(.*)\.jpg$/i, '$1._SX240_.jpg'));
+            img.attr("width", 240);
+        }
+    });
+    
+    return elem;
 }
 
 IMDbProvider = function(url, caption, notes) {
