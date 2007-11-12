@@ -143,9 +143,17 @@
         font-size: 0.9em;
         padding: 0.3em;
         border: 1px solid #ddc;
-        margin-right: 2em;
+        margin-right: 1em;
       }	
-    
+      
+      button {
+        color: #ddc;
+        background-color: #334B42;
+        font-size: 0.9em;
+        padding: 0.3em;
+        border: 1px solid #ddc;
+      }	
+
       /* Header */
       #header {
         margin: 1em auto;
@@ -161,12 +169,6 @@
         color: #ccb;
       }
 
-      #updateSource {
-        border: 1px solid #ddc;
-        padding: 0.3em;
-        font-size: 0.9em;
-      }
-      
        #friends {
           border-top: 1px solid #555;
           margin: 1em;
@@ -358,9 +360,11 @@
           <h3 id="aboutHeader" style="color: #eef;">What is this?</h3>
           <div id="about"><strong>Dumble</strong> is an experiment in creating a <a href="http://en.wikipedia.org/wiki/Tumblelog">tumblelog</a> from a user's <a href="http://del.icio.us/">del.icio.us</a> links.<br/><br/>To create a tumblelog for a different del.icio.us user, just modify the details below.
             <div style="margin: 1em; padding: 1em;">
+            <form id="sourceForm" style="margin-bottom: 2em;">
             Username: <input id="sourceUser" type="text" size="10"/>
             A tag (optional): <input id="sourceTag" type="text" size="10"/>
-            <span id="updateSource">Update</span><br/><br/>
+            <button type="submit">Update</button>
+            </form>
             Need a link to this page? &nbsp;<a id='permalink' href="">Here you go!</a>
             </div>
             <div id="friends">

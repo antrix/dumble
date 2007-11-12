@@ -96,7 +96,7 @@ var Dumble = Dumble ? Dumble : {
         if (this.currentData.length <= 0) {
             this.updateFriends();
             $('#dynposts').fadeOut(1000).empty().fadeIn(1);
-            $.getJSON(URL ? URL : this.currentURL() + '?count=100&callback=?', 
+            $.getJSON(URL ? URL : this.currentURL() + '?count=2&callback=?', 
                 function(data) {
                     if (data.length > 0) {
                         Dumble.currentData = data;
@@ -147,11 +147,12 @@ $(document).ready(function() {
         function() {
          $('#about').slideToggle('fast');
     });
-    $('#updateSource').click(
-        function() {
+
+    $('#sourceForm').submit(function() {
          Dumble.updatePageFor($('#sourceUser').val(), $('#sourceTag').val());
+         $('#sourceUser').blur(); $('#sourceTag').blur();
+         return false;
     });
-    
     
     Dumble.updatePage();
 
