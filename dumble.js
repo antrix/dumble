@@ -96,7 +96,7 @@ var Dumble = Dumble ? Dumble : {
         if (this.currentData.length <= 0) {
             this.updateFriends();
             $('#dynposts').fadeOut(1000).empty().fadeIn(1);
-            $.getJSON(URL ? URL : this.currentURL() + '?count=2&callback=?', 
+            $.getJSON(URL ? URL : this.currentURL() + '?count=100&callback=?', 
                 function(data) {
                     if (data.length > 0) {
                         Dumble.currentData = data;
