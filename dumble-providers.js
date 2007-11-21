@@ -48,7 +48,7 @@ CollegeHumorProvider = function(url, caption, notes) {
 }
 
 AmazonProvider = function(url, caption, notes) {
-    this.re = /amazon\.com\/.*\/?(?:gp\/product|o\/ASIN|obidos\/ASIN|dp)\/(\d{7,10}[\dX])[\/\?]?/i
+    this.re = /amazon\.com\/.*\/?(?:gp\/product|o\/ASIN|obidos\/ASIN|dp)\/(\w{8,11})[\/\?]?/i
     
     var matches = this.re.exec(url);
     if (!matches) {
