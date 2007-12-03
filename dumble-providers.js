@@ -56,7 +56,7 @@ AmazonProvider = function(url, caption, notes) {
     }
 
     var a = $('<a />').attr('href', url);
-    var img = $('<img />').attr('src', 'localhost');
+    var img = $('<img />').attr('src', 'http://localhost/');
     a.append(img);
     var elem = $('<div class="photo"></div>');
     elem.append(a);
@@ -108,7 +108,7 @@ FlickrProvider = function(url, caption, notes) {
     }
 
     var a = $('<a />').attr('href', url);
-    var img = $('<img />').attr('src', 'localhost');
+    var img = $('<img />').attr('src', 'http://localhost/');
     a.append(img);
     var elem = $('<div class="photo"></div>');
     elem.append(a);
@@ -130,6 +130,19 @@ FlickrProvider = function(url, caption, notes) {
         });
     });
     return elem;
+}
+
+FunnyOrDieProvider = function(url, caption, notes) {
+    this.re = /funnyordie\.com\/videos\/(\w+)/i
+    this.template = '<div class="video"><embed width="464" height="388" flashvars="key={videoid}" allowfullscreen="true" quality="high" src="http://www2.funnyordie.com/public/flash/fodplayer.swf?1194729277" type="application/x-shockwave-flash"></embed><span class="caption">{caption}</span>{notes}</div>'
+
+    var matches = this.re.exec(url);
+    if (!matches) {
+        return false;
+    }
+
+    var elem = this.template.supplant({videoid: matches[1], caption: caption, notes: notes});
+    return $(elem);
 }
 
 GenericImageProvider = function(url, caption, notes) {
