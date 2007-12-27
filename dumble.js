@@ -28,6 +28,22 @@ var Dumble = Dumble ? Dumble : {
                 return location.protocol + '//' + location.host + location.pathname + '?u=' + this.currentUser
                   + (this.currentTag ? '&t=' + this.currentTag : '');
             },
+    writeCookie: function() {
+                $.cookie('dumble271207', 'u='+this.currentUser+';t='+this.currentTag, {expires: 365});
+            },
+    readCookie: function() {
+                var prefs = $.cookie('dumble271207');
+                if (!prefs) return;
+                var data = prefs.split(';');
+                for (i=0; i<data.length; i++) {
+                    if (data[i].charAt(0)=='u') {
+                        this.currentUser = data[i].substring(2, data[i].length);
+                    }
+                    if (data[i].charAt(0)=='t') {
+                        this.currentTag = data[i].substring(2, data[i].length);
+                    }
+                }
+            },
     updatePageFor: function(user, tag) {
                 this.currentUser = user;
                 this.currentTag = tag ? tag : '';
@@ -35,6 +51,7 @@ var Dumble = Dumble ? Dumble : {
                 $('#sourceUser').val(this.currentUser);
                 $('#sourceTag').val(this.currentTag);
                 $('#permalink').attr('href', this.permalink());
+                this.writeCookie();
                 this.updatePage();
             },
 
@@ -115,15 +132,28 @@ $(document).ready(function() {
     $('#about').hide();
     $('#previous-next').hide();
 
+    /* Is our location URL the base Dumble app url or does it have u=? & t=? */
+    var isBaseURL = true;
+    
     re_u = /u=(\w+)/i
     re_t = /t=(\w+)/i
     var m = re_u.exec(location.search);
     if (m) {
        Dumble.currentUser = m[1];
+       isBaseURL = false;
     }
     m = re_t.exec(location.search);
     if (m) {
        Dumble.currentTag = m[1];
+       isBaseURL = false;
+    }
+
+    if (isBaseURL) {
+        /* The initial page loaded via the root Dumble app url */
+        Dumble.readCookie();
+    } else {
+        /* We came here via a permalink */
+        Dumble.writeCookie();
     }
 
     $('#sourceUser').val(Dumble.currentUser);
