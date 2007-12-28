@@ -26,7 +26,7 @@
 		<xsl:text> {</xsl:text>
 		<xsl:text>"asin":"</xsl:text><xsl:value-of select="aws:ASIN"/><xsl:text>",</xsl:text>
 		<xsl:text>"largeimgurl":"</xsl:text><xsl:value-of select="aws:LargeImage/aws:URL"/><xsl:text>",</xsl:text>
-		<xsl:text>"thumbdims":["</xsl:text><xsl:value-of select="aws:LargeImage/aws:Height"/><xsl:text>","</xsl:text><xsl:value-of select="aws:LargeImage/aws:Width"/><xsl:text>"],</xsl:text>
+		<xsl:text>"thumbdims":["</xsl:text><xsl:value-of select="aws:LargeImage/aws:Height"/><xsl:text>","</xsl:text><xsl:value-of select="aws:LargeImage/aws:Width"/><xsl:text>"]</xsl:text>
 		<xsl:text>} </xsl:text>
 	</xsl:template>
 </xsl:stylesheet>
