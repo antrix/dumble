@@ -170,17 +170,19 @@
         color: #ccb;
       }
 
-       #friends {
-          border-top: 1px solid #555;
-          margin: 1em;
-          padding: 1em;
-        }
+      #friends {
+        border-top: 1px solid #555;
+      }
 
-        #friends br {clear: both}
-        #friends ul { list-style: none;}
-        #friends-list li {
+      .wordlist {
+         margin: 1em;
+         padding: 1em;
+      }
+      .wordlist br {clear: both}
+      .wordlist ul { list-style: none;}
+      .wordlist li {
           margin-bottom: 0.5em; padding: 0; display: block; float: left; width: 25%;
-        }
+      }
         
       /* Posts */
       #posts {
@@ -364,14 +366,18 @@
             A tag (optional): <input id="sourceTag" type="text" size="10"/>
             <button type="submit">Update</button>
             </form>
+            <div id="tags" class="wordlist">
+                <h2 style="text-align: center; color: #ddc;"></h2>
+                <ul id="tags-list" class="wordlist"></ul><br/>
+            </div>
             </div>
             <div style="border-top: 1px solid #555; padding: 1em; margin: 1em;">
               Need a link to this page? &nbsp;<a id='permalink' href="">Here you go!</a><br/><br/>
               There's also a <a href="javascript:{var b='http://antrix.net/dumble/?u='; var u=document.location.href;m = /del\.icio\.us\/(\w+)\/?/i.exec(u);if(m && m[1] != 'tag' && m[1] != 'network' && m[1] != 'subscriptions' && m[1] != 'url' && m[1] != 'for') {var go = b+m[1]; n = /del\.icio\.us\/\w+\/(\w+)\/?/i.exec(u); if (n) {go = go + '&t=' + n[1];} document.location.href=go;} else {alert('Could not figure out delicious user name');}}">View in Dumble</a> bookmarklet and a similar <a href="/stuff/gm/dumble.user.js">greasemonkey script</a> to integrate Dumble with del.icio.us.
             </div>
-            <div id="friends">
+            <div id="friends" class="wordlist">
                 <h3 style="text-align: center; color: #ddc;"></h3>
-                <ul id="friends-list"></ul><br/>
+                <ul id="friends-list" class="wordlist"></ul><br/>
                 <div id="networklink" style="text-align: center; margin-top: 1em;">
                     <a target="blank"/>
                 </div> 

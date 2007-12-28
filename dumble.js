@@ -60,6 +60,9 @@ var Dumble = Dumble ? Dumble : {
     friendsURLFor: function(user) {
                 return 'http://del.icio.us/feeds/json/network/' + user;
             },
+    tagsURLFor: function(user) {
+                return 'http://del.icio.us/feeds/json/tags/' + user;
+            },
     permalink: function(user, tag) {
                 if(!user) {user = this.currentUser}
                 if(!tag && user == this.currentUser)  {tag = this.currentTag}
@@ -85,7 +88,12 @@ var Dumble = Dumble ? Dumble : {
                 }
             },
     updatePageFor: function(user, tag) {
-                this.currentUser = user;
+                if (typeof _lastUser == 'undefined' || _lastUser != user) {
+                    _lastUser = user;
+                    this.currentUser = user;
+                    this.updateFriends();
+                    this.updateTags();
+                }
                 this.currentTag = tag ? tag : '';
                 this.currentData = [];                
                 $('#sourceUser').val(this.currentUser);
@@ -119,7 +127,27 @@ var Dumble = Dumble ? Dumble : {
             $('.post').fadeIn(3000);
         },
 
-    updateFriends: function() {
+    updateTags: function() {
+        $('#tags-list').fadeOut(1000);
+        $('#tags h2').text("{name}'s top tags".supplant({name: this.currentUser}));
+        
+        $.getJSON(this.tagsURLFor(this.currentUser) + '?count=20&sort=count&callback=?', 
+            function(tags) {
+                var tgt = $('#tags-list');
+                tgt.empty();
+                if(tags) { /* Delicious returns tags as {tag1: count1, 'foo': 20, 'bar': 30} */
+                    $.each(tags, function(tag, count) {
+                        var e = $('<li><a href="' +Dumble.permalink(Dumble.currentUser, tag)+ '" onClick="javascript:Dumble.updatePageFor(\'{name}\', \'{tag}\');return false;">{tag}</a></li>'.supplant({name: Dumble.currentUser, tag: tag}));
+                        tgt.append(e);
+                    });
+                }
+                if(tgt.html() == '') {
+                    tgt.text(Dumble.currentUser + " hasn't tagged any links!");
+                }
+                $('#tags-list').fadeIn(1000);
+            });
+    },
+    updateFriends: function() {        
         $('#friends-list').fadeOut(1000);
         $('#friends h3').text("Explore {name}'s network".supplant({name: this.currentUser}));
         $('#networklink a').attr('href', 'http://del.icio.us/network?add=' + this.currentUser)
@@ -145,9 +173,8 @@ var Dumble = Dumble ? Dumble : {
         $('#previous-next').fadeOut(2000);
         
         if (this.currentData.length <= 0) {
-            this.updateFriends();
             $('#dynposts').fadeOut(1000).empty().fadeIn(1);
-            $.getJSON(URL ? URL : this.currentURL() + '?count=100&callback=?', 
+            $.getJSON(URL ? URL : this.currentURL() + '?count=10&callback=?', 
                 function(data) {
                     if (data.length > 0) {
                         Dumble.currentData = data;
@@ -157,6 +184,7 @@ var Dumble = Dumble ? Dumble : {
                             $('<div class="post"><h3>No items found :-(</h3></div>\n').hide());
                          $('.post').fadeIn(3000);
                     }
+                    $('#about').slideUp('fast');
                     $('body').css({ cursor: 'default' });
                 });
         } else {
@@ -191,14 +219,7 @@ $(document).ready(function() {
     if (isBaseURL) {
         /* The initial page loaded via the root Dumble app url */
         Dumble.readCookie();
-    } else {
-        /* We came here via a permalink */
-        Dumble.writeCookie();
-    }
-
-    $('#sourceUser').val(Dumble.currentUser);
-    $('#sourceTag').val(Dumble.currentTag);
-    $('#permalink').attr('href', Dumble.permalink());
+    } 
 
     $('#aboutHeader,#updateSource').hover(
         function() {
@@ -218,6 +239,6 @@ $(document).ready(function() {
          return false;
     });
     
-    Dumble.updatePage();
+    Dumble.updatePageFor(Dumble.currentUser, Dumble.currentTag);
 
 });  /* End $(document).ready() block */
