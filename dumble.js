@@ -1,15 +1,16 @@
 var Providers = new Array();
 
-/* Providers sourced from dumble-providers.js */
-Providers.push(YoutubeProvider);
-Providers.push(GoogleVideoProvider);
-Providers.push(CollegeHumorProvider);
-Providers.push(FlickrProvider);
-Providers.push(AmazonProvider); 
-Providers.push(IMDbProvider);
-Providers.push(FunnyOrDieProvider);
-Providers.push(GenericImageProvider);
-Providers.push(GenericLinkProvider); /* Should be last in the array! */
+$.getScript("dumble-providers.js", function() {
+    Providers.push(YoutubeProvider);
+    Providers.push(GoogleVideoProvider);
+    Providers.push(CollegeHumorProvider);
+    Providers.push(FlickrProvider);
+    Providers.push(AmazonProvider); 
+    Providers.push(IMDbProvider);
+    Providers.push(FunnyOrDieProvider);
+    Providers.push(GenericImageProvider);
+    Providers.push(GenericLinkProvider); /* Should be last in the array! */
+});
 
 var Dumble = Dumble ? Dumble : {
     currentUser: 'antrix',
