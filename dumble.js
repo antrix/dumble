@@ -1,3 +1,15 @@
+String.prototype.supplant = function (o) {
+    /* http://javascript.crockford.com/remedial.html */
+    return this.replace(/{([^{}]*)}/g,
+        function (a, b) {
+            var r = o[b];
+            return typeof r === 'string' || typeof r === 'number' ? r : a;
+        }
+    );
+};
+
+var DEBUG = false;
+
 var Providers = new Array();
 
 $.getScript("dumble-providers.js", function() {
@@ -11,6 +23,26 @@ $.getScript("dumble-providers.js", function() {
     Providers.push(GenericImageProvider);
     Providers.push(GenericLinkProvider); /* Should be last in the array! */
 });
+
+var Analytics = Analytics ? Analytics : {
+    pageTracker: null,
+    init: function(page) {
+        if (DEBUG) {return}
+        $.getScript("http://www.google-analytics.com/ga.js", function(page) {
+            Analytics.pageTracker = _gat._getTracker("UA-1736551-2");
+            Analytics.pageTracker._initData();
+            if(page) { Analytics.trackPage(page); }
+        });
+    },
+    trackPage: function(page) {
+        if (DEBUG) {return}
+        if (!this.pageTracker) {
+            this.init(page);
+        } else {
+            this.pageTracker._trackPageview(page);
+        }
+    }
+}
 
 var Dumble = Dumble ? Dumble : {
     currentUser: 'antrix',
@@ -32,7 +64,7 @@ var Dumble = Dumble ? Dumble : {
     writeCookie: function() {
                 $.cookie('dumble271207', 'u='+this.currentUser+';t='+this.currentTag, {expires: 365});
                 /* Google Analytics */
-                pageTracker._trackPageview("/dumble/"+this.currentUser+"/"+this.currentTag); 
+                Analytics.trackPage("/dumble/"+this.currentUser+"/"+this.currentTag); 
             },
     readCookie: function() {
                 var prefs = $.cookie('dumble271207');
@@ -127,7 +159,7 @@ var Dumble = Dumble ? Dumble : {
             $('body').css({ cursor: 'default' });
         }
     } 
-}
+}  /* End Dumble namespace */
 
 $(document).ready(function() {
 
@@ -135,11 +167,6 @@ $(document).ready(function() {
     $('#about').hide();
     $('#previous-next').hide();
 
-    /* Google Analytics Initialize */    
-    var pageTracker = _gat._getTracker("UA-1736551-2");
-    pageTracker._initData();
-    pageTracker._trackPageview();
-    
     /* Is our location URL the base Dumble app url or does it have u=? & t=? */
     var isBaseURL = true;
     

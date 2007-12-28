@@ -1,13 +1,3 @@
-String.prototype.supplant = function (o) {
-    /* http://javascript.crockford.com/remedial.html */
-    return this.replace(/{([^{}]*)}/g,
-        function (a, b) {
-            var r = o[b];
-            return typeof r === 'string' || typeof r === 'number' ? r : a;
-        }
-    );
-};
-
 YoutubeProvider = function(url, caption, notes) {
     this.re = /youtube\.com\/watch.+v=([\w-]+)&?/i
     this.template = '<div class="video"><embed src="http://www.youtube.com/v/{videoid}" type="application/x-shockwave-flash" wmode="transparent" style="width:425px; height:355px;"></embed><span class="caption">{caption}</span>{notes}</div>'
