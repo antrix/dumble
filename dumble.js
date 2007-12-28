@@ -174,7 +174,7 @@ var Dumble = Dumble ? Dumble : {
         
         if (this.currentData.length <= 0) {
             $('#dynposts').fadeOut(1000).empty().fadeIn(1);
-            $.getJSON(URL ? URL : this.currentURL() + '?count=10&callback=?', 
+            $.getJSON(URL ? URL : this.currentURL() + '?count=100&callback=?', 
                 function(data) {
                     if (data.length > 0) {
                         Dumble.currentData = data;

@@ -46,7 +46,7 @@ AmazonProvider = function(url, caption, notes) {
     }
 
     var a = $('<a />').attr('href', url);
-    var img = $('<img />').attr('src', 'http://localhost/');
+    var img = $('<img />').attr('src', 'http://http://images.amazon.com/images/G/01/x-locale/browse/upf/amzn-logo-5.gif');
     a.append(img);
     var elem = $('<div class="photo"></div>');
     elem.append(a);
@@ -98,7 +98,7 @@ FlickrProvider = function(url, caption, notes) {
     }
 
     var a = $('<a />').attr('href', url);
-    var img = $('<img />').attr('src', 'http://localhost/');
+    var img = $('<img />').attr('src', 'http://l.yimg.com/www.flickr.com/images/flickr_logo_gamma.gif.v1.5.10');
     a.append(img);
     var elem = $('<div class="photo"></div>');
     elem.append(a);
