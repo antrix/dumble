@@ -30,6 +30,8 @@ var Dumble = Dumble ? Dumble : {
             },
     writeCookie: function() {
                 $.cookie('dumble271207', 'u='+this.currentUser+';t='+this.currentTag, {expires: 365});
+                /* Google Analytics */
+                pageTracker._trackPageview("/dumble/"+this.currentUser+"/"+this.currentTag); 
             },
     readCookie: function() {
                 var prefs = $.cookie('dumble271207');
@@ -132,6 +134,11 @@ $(document).ready(function() {
     $('#about').hide();
     $('#previous-next').hide();
 
+    /* Google Analytics Initialize */    
+    var pageTracker = _gat._getTracker("UA-1736551-2");
+    pageTracker._initData();
+    pageTracker._trackPageview();
+    
     /* Is our location URL the base Dumble app url or does it have u=? & t=? */
     var isBaseURL = true;
     
