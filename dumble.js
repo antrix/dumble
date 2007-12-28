@@ -8,7 +8,10 @@ String.prototype.supplant = function (o) {
     );
 };
 
-var DEBUG = false;
+var DEBUG = true;
+if (location.host.toLowerCase() == 'antrix.net') {
+    DEBUG = false;
+}
 
 var Providers = new Array();
 
@@ -57,9 +60,11 @@ var Dumble = Dumble ? Dumble : {
     friendsURLFor: function(user) {
                 return 'http://del.icio.us/feeds/json/network/' + user;
             },
-    permalink: function() {
-                return location.protocol + '//' + location.host + location.pathname + '?u=' + this.currentUser
-                  + (this.currentTag ? '&t=' + this.currentTag : '');
+    permalink: function(user, tag) {
+                if(!user) {user = this.currentUser}
+                if(!tag && user == this.currentUser)  {tag = this.currentTag}
+                return location.protocol + '//' + location.host + location.pathname + '?u=' + user
+                  + (tag ? '&t=' + tag : '');
             },
     writeCookie: function() {
                 $.cookie('dumble271207', 'u='+this.currentUser+';t='+this.currentTag, {expires: 365});
@@ -126,7 +131,7 @@ var Dumble = Dumble ? Dumble : {
                 tgt.empty();
                 if(names.length > 0) {
                     $.each(names, function(i, name) {
-                        var e = $('<li><a href="javascript:Dumble.updatePageFor(\'{name}\');">{name}</a></li>'.supplant({name: name}));
+                        var e = $('<li><a href="' +Dumble.permalink(name)+ '" onClick="javascript:Dumble.updatePageFor(\'{name}\');return false;">{name}</a></li>'.supplant({name: name}));
                         tgt.append(e);
                     });
                 } else {
