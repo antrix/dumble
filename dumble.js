@@ -100,6 +100,7 @@ var Dumble = Dumble ? Dumble : {
                 $('#sourceTag').val(this.currentTag);
                 $('#permalink').attr('href', this.permalink());
                 this.writeCookie();
+                this.updateHistory();
                 this.updatePage();
             },
 
@@ -126,6 +127,19 @@ var Dumble = Dumble ? Dumble : {
             }
             $('.post').fadeIn(3000);
         },
+
+    updateHistory: function() {
+        var string = this.currentUser + (this.currentTag ? '/' + this.currentTag : '');
+        var e = $('<li><a href="{l}" onClick="javascript:Dumble.updatePageFor(\'{n}\', \'{t}\');return false;">'.supplant({n: this.currentUser, t: this.currentTag, l: this.permalink()})
+                     +string+ '</a></li>');
+        $('#history ul').prepend(e);
+
+        if ($('#history ul li').length == 2) {
+            $('#history ul').slideDown('fast');
+            $('#history-clear').show();
+            $('#history').fadeIn('slow');
+        }
+    },
 
     updateTags: function() {
         $('#tags-list').fadeOut(1000);
@@ -199,6 +213,7 @@ $(document).ready(function() {
     /* Some page setup first */
     $('#about').hide();
     $('#previous-next').hide();
+    $('#history').hide();
 
     /* Is our location URL the base Dumble app url or does it have u=? & t=? */
     var isBaseURL = true;

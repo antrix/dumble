@@ -338,7 +338,21 @@
       #footer ul li a:hover {
         text-decoration: underline;
       }
-      
+
+      #history {
+        text-align: left;
+        position: absolute;
+        width: 15em;
+        background-color: #363b39;
+        border: 1px solid #494949;
+        margin-left: 44em;
+        padding: 0em; 
+      }
+
+      #history h2 {text-align: center; padding: 0.2em; border-bottom: 1px solid #494949;
+                   font-size: 1.2em;}
+      #history ul {list-style: none; margin: 1em 1em 0.5em 1em;}
+      #history-clear a, a:visited, a:active, a:hover { text-decoration: none; color: #555;}
     </style>
     
 <!--[if IE]>
@@ -356,6 +370,13 @@
     </div>
     
     <div id="posts">
+    
+      <div id="history"><h2>Session History</h2><ul></ul>
+        <h2 id="history-clear">
+            <a href="#" onClick="javascript:$('#history-clear').hide();$('#history ul').slideUp('slow').empty();Dumble.updateHistory();return false;">Clear?</a>
+        </h2>
+      </div>
+
       <div class="post" style="background-color: #334B42;">
         <div class="regular">
           <h3 id="aboutHeader" style="color: #eef;">What is this?</h3>
