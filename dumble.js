@@ -129,7 +129,7 @@ var Dumble = Dumble ? Dumble : {
 
     updateTags: function() {
         $('#tags-list').fadeOut(1000);
-        $('#tags h2').text("{name}'s top tags".supplant({name: this.currentUser}));
+        $('#tags h3').text("{name}'s top tags".supplant({name: this.currentUser}));
         
         $.getJSON(this.tagsURLFor(this.currentUser) + '?count=20&sort=count&callback=?', 
             function(tags) {

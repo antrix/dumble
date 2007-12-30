@@ -176,7 +176,7 @@
 
       .wordlist {
          margin: 1em;
-         padding: 1em;
+         padding: 1em 0em 0em 0em;
       }
       .wordlist br {clear: both}
       .wordlist ul { list-style: none;}
@@ -360,17 +360,18 @@
         <div class="regular">
           <h3 id="aboutHeader" style="color: #eef;">What is this?</h3>
           <div id="about"><strong>Dumble</strong> is <a href="/journal/misc/dumble.html">an experiment</a> in creating a <a href="http://en.wikipedia.org/wiki/Tumblelog">tumblelog</a> from a user's <a href="http://del.icio.us/">del.icio.us</a> links.<br/><br/>To create a tumblelog for a different del.icio.us user, just modify the details below.
-            <div style="margin: 1em; padding: 1em;">
+            <div style="margin: 1em 1em 0em 1em; padding: 1em 1em 0em 1em;">
             <form id="sourceForm" style="margin-bottom: 2em;">
             Username: <input id="sourceUser" type="text" size="10"/>
             A tag (optional): <input id="sourceTag" type="text" size="10"/>
             <button type="submit">Update</button>
             </form>
+            </div>
             <div id="tags" class="wordlist">
-                <h2 style="text-align: center; color: #ddc;"></h2>
+                <h3 style="text-align: center; color: #ddc;"></h3>
                 <ul id="tags-list" class="wordlist"></ul><br/>
             </div>
-            </div>
+            
             <div style="border-top: 1px solid #555; padding: 1em; margin: 1em;">
               Need a link to this page? &nbsp;<a id='permalink' href="">Here you go!</a><br/><br/>
               There's also a <a href="javascript:{var b='http://antrix.net/dumble/?u='; var u=document.location.href;m = /del\.icio\.us\/(\w+)\/?/i.exec(u);if(m && m[1] != 'tag' && m[1] != 'network' && m[1] != 'subscriptions' && m[1] != 'url' && m[1] != 'for') {var go = b+m[1]; n = /del\.icio\.us\/\w+\/(\w+)\/?/i.exec(u); if (n) {go = go + '&t=' + n[1];} document.location.href=go;} else {alert('Could not figure out delicious user name');}}">View in Dumble</a> bookmarklet and a similar <a href="/stuff/gm/dumble.user.js">greasemonkey script</a> to integrate Dumble with del.icio.us.
