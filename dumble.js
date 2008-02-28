@@ -16,6 +16,7 @@ if (location.host.toLowerCase() == 'antrix.net') {
 var Providers = new Array();
 
 $.getScript("dumble-providers.js", function() {
+    Providers.push(MetacafeProvider);
     Providers.push(YoutubeProvider);
     Providers.push(GoogleVideoProvider);
     Providers.push(CollegeHumorProvider);

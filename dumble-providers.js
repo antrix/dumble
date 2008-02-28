@@ -1,3 +1,16 @@
+MetacafeProvider = function(url, caption, notes) {
+    this.re = /metacafe\.com\/watch\/(\d+)\/.+/i
+    this.template = '<div class="video"><embed src="http://www.metacafe.com/fplayer/{videoid}/movie.swf" style="width:400px; height:345px;" wmode="transparent" type="application/x-shockwave-flash"></embed><span class="caption">{caption}</span>{notes}</div>'
+
+    var matches = this.re.exec(url);
+    if (!matches) {
+        return false;
+    }
+
+    var elem = this.template.supplant({videoid: matches[1], caption: caption, notes: notes});
+    return $(elem);
+}
+
 YoutubeProvider = function(url, caption, notes) {
     this.re = /youtube\.com\/watch.+v=([\w-]+)&?/i
     this.template = '<div class="video"><embed src="http://www.youtube.com/v/{videoid}" type="application/x-shockwave-flash" wmode="transparent" style="width:425px; height:355px;"></embed><span class="caption">{caption}</span>{notes}</div>'
