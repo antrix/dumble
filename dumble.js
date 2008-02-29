@@ -100,7 +100,7 @@ var Dumble = Dumble ? Dumble : {
                 $('#sourceUser').val(this.currentUser);
                 $('#sourceTag').val(this.currentTag);
                 $('#permalink').attr('href', this.permalink());
-                $('#rss-feed').attr('href', 'http://del.icio.us/rss/'+this.currentUser+'/'+this.currentTag);
+                $('#rss-feed-body').attr('href', 'http://del.icio.us/rss/'+this.currentUser+'/'+this.currentTag);
                 this.writeCookie();
                 this.updateHistory();
                 this.updatePage();
