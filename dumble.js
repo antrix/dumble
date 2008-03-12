@@ -8,9 +8,9 @@ String.prototype.supplant = function (o) {
     );
 };
 
-var DEBUG = true;
+var DUMBLE_DEBUG = true;
 if (location.host.toLowerCase() == 'antrix.net') {
-    DEBUG = false;
+    DUMBLE_DEBUG = false;
 }
 
 var Providers = new Array();
@@ -24,6 +24,7 @@ $.getScript("dumble-providers.js", function() {
     Providers.push(AmazonProvider); 
     Providers.push(IMDbProvider);
     Providers.push(FunnyOrDieProvider);
+    Providers.push(TwitterProvider);
     Providers.push(GenericImageProvider);
     Providers.push(GenericLinkProvider); /* Should be last in the array! */
 });
@@ -31,7 +32,7 @@ $.getScript("dumble-providers.js", function() {
 var Analytics = Analytics ? Analytics : {
     pageTracker: null,
     init: function(page) {
-        if (DEBUG) {return}
+        if (DUMBLE_DEBUG) {return}
         $.getScript("http://www.google-analytics.com/ga.js", function(page) {
             Analytics.pageTracker = _gat._getTracker("UA-1736551-2");
             Analytics.pageTracker._initData();
@@ -39,7 +40,7 @@ var Analytics = Analytics ? Analytics : {
         });
     },
     trackPage: function(page) {
-        if (DEBUG) {return}
+        if (DUMBLE_DEBUG) {return}
         if (!this.pageTracker) {
             this.init(page);
         } else {
@@ -190,7 +191,7 @@ var Dumble = Dumble ? Dumble : {
         
         if (this.currentData.length <= 0) {
             $('#dynposts').fadeOut(1000).empty().fadeIn(1);
-            $.getJSON(URL ? URL : this.currentURL() + '?count=100&callback=?', 
+            $.getJSON((URL ? URL : this.currentURL())+'?count='+(DUMBLE_DEBUG ?'5':'100')+'&callback=?', 
                 function(data) {
                     if (data.length > 0) {
                         Dumble.currentData = data;

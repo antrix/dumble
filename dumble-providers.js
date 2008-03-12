@@ -135,6 +135,25 @@ FlickrProvider = function(url, caption, notes) {
     return elem;
 }
 
+TwitterProvider = function(url, caption, notes) {
+    this.re = /twitter\.com\/(\w+)\/statuses\/(\d+)/i
+
+    var matches = this.re.exec(url);
+    if (!matches) {
+        return false;
+    }
+
+    var elem = $('<div class="quote"></div>');
+
+    $.getJSON('http://twitter.com/statuses/show/' + matches[2] + '.json?callback=?', 
+        function(data) {
+            var t = '&#8220;{status}&#8221;&nbsp;&nbsp;<span class="source"><a href="{url}">tweeted {user}</a></span>';
+            elem.html(t.supplant({status: (data.text?data.text:caption), url: url, 
+                    user: (data.user.screen_name ? data.user.screen_name : matches[1])}));
+        });
+    return elem;
+}
+
 FunnyOrDieProvider = function(url, caption, notes) {
     this.re = /funnyordie\.com\/videos\/(\w+)/i
     this.template = '<div class="video"><embed width="464" height="388" flashvars="key={videoid}" allowfullscreen="true" quality="high" src="http://www2.funnyordie.com/public/flash/fodplayer.swf?1194729277" type="application/x-shockwave-flash"></embed><span class="caption">{caption}</span>{notes}</div>'
