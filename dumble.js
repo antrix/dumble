@@ -13,6 +13,17 @@ if (location.host.toLowerCase() == 'antrix.net') {
     DUMBLE_DEBUG = false;
 }
 
+var firelog = function(str) {
+    if(DUMBLE_DEBUG) console.log(str);
+}
+
+var getUrlParam = function(param) {
+    var regex = '[?&]' + param + '=([^&#]*)';
+    var results = (new RegExp(regex)).exec(window.location.search);
+    if(results) return results[1];
+    return '';
+}
+    
 var Providers = new Array();
 
 $.getScript("dumble-providers.js", function() {
@@ -102,6 +113,8 @@ var Dumble = Dumble ? Dumble : {
                 $('#sourceTag').val(this.currentTag);
                 $('#permalink').attr('href', this.permalink());
                 $('#rss-feed-body').attr('href', 'http://del.icio.us/rss/'+this.currentUser+'/'+this.currentTag);
+                $('#header h2').html('auto tumbling <em>'+this.currentUser+'&rsquo;s</em> del.icio.us links'
+                    + (tag ? ' tagged <em>' + tag + '</em>' : ''));
                 this.writeCookie();
                 this.updateHistory();
                 this.updatePage();
@@ -221,17 +234,20 @@ $(document).ready(function() {
     /* Is our location URL the base Dumble app url or does it have u=? & t=? */
     var isBaseURL = true;
     
-    re_u = /u=(\w+)/i
-    re_t = /t=(\w+)/i
-    var m = re_u.exec(location.search);
+    var m = getUrlParam('u');
     if (m) {
-       Dumble.currentUser = m[1];
+       Dumble.currentUser = m;
        isBaseURL = false;
     }
-    m = re_t.exec(location.search);
+    m = getUrlParam('t');
     if (m) {
-       Dumble.currentTag = m[1];
+       Dumble.currentTag = m;
        isBaseURL = false;
+    }
+    m = unescape(getUrlParam('title'));
+    if (m) {
+       $('#header h1 a').text(m);
+       window.document.title = m;
     }
 
     if (isBaseURL) {
