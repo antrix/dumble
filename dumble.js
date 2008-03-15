@@ -265,6 +265,7 @@ $(document).ready(function() {
     $('#aboutHeader').click(
         function() {
          $('#about').slideToggle('fast');
+         Analytics.trackPage("/dumble/--about-header--/");
     });
 
     $('#sourceForm').submit(function() {
