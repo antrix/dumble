@@ -58,7 +58,7 @@ AmazonProvider = function(url, caption, notes) {
         return false;
     }
 
-    var a = $('<a />').attr('href', url);
+    var a = $('<a />').attr('href', url).attr('target', '_blank');
     var img = $('<img />').attr('src', 'http://http://images.amazon.com/images/G/01/x-locale/browse/upf/amzn-logo-5.gif');
     a.append(img);
     var elem = $('<div class="photo"></div>');
@@ -80,7 +80,7 @@ AmazonProvider = function(url, caption, notes) {
 
 IMDbProvider = function(url, caption, notes) {
     this.re = /imdb\.com\/title\/tt\d{7,7}\//i
-    this.template = '<div class="link"><h3><a href="{url}" target="blank">{caption}</a></h3></div>'
+    this.template = '<div class="link"><h3><a href="{url}" target="_blank">{caption}</a></h3></div>'
 
     var matches = this.re.exec(url);
     if (!matches) {
@@ -110,7 +110,7 @@ FlickrProvider = function(url, caption, notes) {
         return false;
     }
 
-    var a = $('<a />').attr('href', url);
+    var a = $('<a />').attr('href', url).attr('target', '_blank');
     var img = $('<img />').attr('src', 'http://l.yimg.com/www.flickr.com/images/flickr_logo_gamma.gif.v1.5.10');
     a.append(img);
     var elem = $('<div class="photo"></div>');
@@ -147,7 +147,7 @@ TwitterProvider = function(url, caption, notes) {
 
     $.getJSON('http://twitter.com/statuses/show/' + matches[2] + '.json?callback=?', 
         function(data) {
-            var t = '&#8220;{status}&#8221;&nbsp;&nbsp;<span class="source"><a href="{url}">tweeted {user}</a></span>';
+            var t = '&#8220;{status}&#8221;&nbsp;&nbsp;<span class="source"><a href="{url}" target="_blank">tweeted {user}</a></span>';
             elem.html(t.supplant({status: (data.text?data.text:caption), url: url, 
                     user: (data.user.screen_name ? data.user.screen_name : matches[1])}));
         });
@@ -181,7 +181,7 @@ GenericImageProvider = function(url, caption, notes) {
 }
 
 GenericLinkProvider = function(url, caption, notes) {
-    this.template = '<div class="link"><h3><a href="{url}" target="blank">{caption}</a></h3>{notes}</div>'
+    this.template = '<div class="link"><h3><a href="{url}" target="_blank">{caption}</a></h3>{notes}</div>'
 
     var elem = this.template.supplant({url: url, caption: caption, notes: notes});
     return $(elem);
