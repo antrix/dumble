@@ -68,13 +68,13 @@ var Dumble = Dumble ? Dumble : {
             return this.urlFor(this.currentUser, this.currentTag);
             },
     urlFor: function(user, tag) {
-                return 'http://del.icio.us/feeds/json/' + user + '/' + tag;
+                return 'http://feeds.delicious.com/feeds/json/' + user + '/' + tag;
             },
     friendsURLFor: function(user) {
-                return 'http://del.icio.us/feeds/json/network/' + user;
+                return 'http://feeds.delicious.com/feeds/json/network/' + user;
             },
     tagsURLFor: function(user) {
-                return 'http://del.icio.us/feeds/json/tags/' + user;
+                return 'http://feeds.delicious.com/feeds/json/tags/' + user;
             },
     permalink: function(user, tag) {
                 if(!user) {user = this.currentUser}
