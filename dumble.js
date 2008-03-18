@@ -26,7 +26,13 @@ var getUrlParam = function(param) {
     
 var Providers = new Array();
 
-$.getScript("dumble-providers.js", function() {
+$.ajax({
+  type: 'GET',
+  url: 'dumble-providers.js',
+  cache: true,
+  dataType: 'script',
+  data: null,
+  success: function() { 
     Providers.push(MetacafeProvider);
     Providers.push(YoutubeProvider);
     Providers.push(GoogleVideoProvider);
@@ -38,6 +44,7 @@ $.getScript("dumble-providers.js", function() {
     Providers.push(TwitterProvider);
     Providers.push(GenericImageProvider);
     Providers.push(GenericLinkProvider); /* Should be last in the array! */
+  }
 });
 
 var Analytics = Analytics ? Analytics : {
