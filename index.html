@@ -378,7 +378,7 @@
     
       <div id="history"><h2>Session History</h2><ul></ul>
         <h2 id="history-clear">
-            <a href="#" onClick="javascript:$('#history-clear').hide();$('#history ul').slideUp('slow').empty();Dumble.updateHistory();return false;">Clear?</a>
+            <a href="" onClick="javascript:$('#history-clear').hide();$('#history ul').slideUp('slow').empty();Dumble.updateHistory();return false;">Clear?</a>
         </h2>
       </div>
 
@@ -420,7 +420,7 @@
         </div>
         
       <div id="previous-next">
-        <a href="javascript:Dumble.updatePage();">More?</a>
+        <a href="" onClick="javascript:Analytics.trackPage('/dumble/--more--/');Dumble.updatePage();return false;">More?</a>
       </div> 
 
     </div> <!-- end posts-->
@@ -430,8 +430,6 @@
         <li>Engine <a href="http://jquery.com/">jQuery</a></li>
         <li>Designer <a href="http://cubicle17.com/">Bill Israel</a></li>
         <li>Code Monkey <a href="http://antrix.net/">Deepak Sarda</a></li>
-<!--         <li>Feed <a href="/rss">RSS</a></li> -->
-<!--         <li>Browse <a href="/archive">Archives</a></li> -->
       </ul>
     </div>
   </body>
