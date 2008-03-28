@@ -59,7 +59,7 @@ AmazonProvider = function(url, caption, notes) {
     }
 
     var a = $('<a />').attr('href', url).attr('target', '_blank');
-    var img = $('<img />').attr('src', 'http://http://images.amazon.com/images/G/01/x-locale/browse/upf/amzn-logo-5.gif');
+    var img = $('<img />').attr('src', 'http://images.amazon.com/images/G/01/x-locale/browse/upf/amzn-logo-5.gif');
     a.append(img);
     var elem = $('<div class="photo"></div>');
     elem.append(a);
