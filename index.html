@@ -401,7 +401,7 @@
             <div style="border-top: 1px solid #555; padding: 1em; margin: 1em;">
                 Need a link to this page? &nbsp;<a id='permalink' href="">Here you go!</a>
                 &nbsp;Or get the feed! &nbsp;<a id='rss-feed-body' style="border: none;" href=""><img style="vertical-align: middle" src="images/feed-icon.png" alt="RSS Feed icon"/></a><br/><br/>
-              There's also a <a href="javascript:{var b='http://antrix.net/dumble/?u='; var u=document.location.href;m = /del\.icio\.us\/(\w+)\/?/i.exec(u);if(m && m[1] != 'tag' && m[1] != 'network' && m[1] != 'subscriptions' && m[1] != 'url' && m[1] != 'for') {var go = b+m[1]; n = /del\.icio\.us\/\w+\/(\w+)\/?/i.exec(u); if (n) {go = go + '&t=' + n[1];} document.location.href=go;} else {alert('Could not figure out delicious user name');}}">View in Dumble</a> bookmarklet and a similar <a href="/stuff/gm/dumble.user.js">greasemonkey script</a> to integrate Dumble with del.icio.us.
+              There's also a <a href="javascript:{var b='http://antrix.net/dumble/?u='; var u=document.location.href;m = /del\.icio\.us\/([\w\.]+)\/?/i.exec(u);if(m && m[1] != 'tag' && m[1] != 'network' && m[1] != 'subscriptions' && m[1] != 'url' && m[1] != 'for') {var go = b+m[1]; n = /del\.icio\.us\/\w+\/(\w+)\/?/i.exec(u); if (n) {go = go + '&t=' + n[1];} document.location.href=go;} else {alert('Could not figure out delicious user name');}}">View in Dumble</a> bookmarklet and a similar <a href="/stuff/gm/dumble.user.js">greasemonkey script</a> to integrate Dumble with del.icio.us.
             </div>
             <div id="friends" class="wordlist">
                 <h3 style="text-align: center; color: #ddc;"></h3>
