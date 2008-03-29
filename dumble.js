@@ -26,6 +26,10 @@ var getUrlParam = function(param) {
     
 var Providers = new Array();
 
+$.ajaxSetup({
+    cache: true
+});
+
 $.ajax({
   type: 'GET',
   url: 'dumble-providers.js',
