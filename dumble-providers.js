@@ -154,6 +154,33 @@ TwitterProvider = function(url, caption, notes) {
     return elem;
 }
 
+WikipediaProvider = function(url, caption, notes) {
+    this.re = /en\.wikipedia\.org\/wiki\/([-\w\.]+)/i
+    var matches = this.re.exec(url);
+    if (!matches) {
+        return false;
+    }
+
+    this.template = '<div class="regular"><h3><a href="{url}" target="_blank">{caption}</a></h3>{notes}</div>'
+
+    var elem = $(this.template.supplant({url: url, caption: caption, notes: notes}));
+    var content = $('<div/>');
+    elem.append(content);
+
+    $.getJSON('http://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content' 
+              + '&rvsection&format=json&titles='+matches[1]+'&callback=?', 
+        function(data) {
+            for (page in data.query.pages) {
+                p = data.query.pages[page]
+                wikitext = p.revisions[0]['*'];
+                htmltext = wiki2html(wikitext);
+                content.html('<blockquote>'+htmltext+'</blockquote>');
+                break;
+            }
+        });
+    return elem;
+}
+
 FunnyOrDieProvider = function(url, caption, notes) {
     this.re = /funnyordie\.com\/videos\/(\w+)/i
     this.template = '<div class="video"><embed width="464" height="388" flashvars="key={videoid}" allowfullscreen="true" quality="high" src="http://www2.funnyordie.com/public/flash/fodplayer.swf?1194729277" type="application/x-shockwave-flash"></embed><span class="caption">{caption}</span>{notes}</div>'

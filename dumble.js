@@ -46,6 +46,7 @@ $.ajax({
     Providers.push(IMDbProvider);
     Providers.push(FunnyOrDieProvider);
     Providers.push(TwitterProvider);
+    Providers.push(WikipediaProvider);
     Providers.push(GenericImageProvider);
     Providers.push(GenericLinkProvider); /* Should be last in the array! */
   }
